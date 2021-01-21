@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mybatis.mapper.FilmMapper">
+
+	<resultMap type="com.example.demo.type.aliases.Film"
+		id="filmMap">
+		<result property="filmId" column="film_id" jdbcType="NUMERIC" />
+		<result property="title" column="title" jdbcType="VARCHAR" />
+		<result property="description" column="description"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getActor" resultMap="filmMap">
+		select
+		f.film_id,
+		f.title,
+		f.description
+		from
+		film f
+		where
+		film_id=#{id}
+	</select>
+	<insert id="addActor"
+		parameterType="com.example.demo.type.aliases.Film">
+		insert into film (
+		film_id,
+		title,
+		description,
+		language_id
+		) values (
+		#{id},
+		#{title},
+		#{description},
+		1
+		)
+	</insert>
+	<select id="getFilms" statementType="CALLABLE"
+		resultMap="filmMap">
+		{call film_starts_with(
+		#{id},
+		#{replacementCost},
+		#{rentalPrice}
+		)
+		}
+	</select>
+</mapper>
